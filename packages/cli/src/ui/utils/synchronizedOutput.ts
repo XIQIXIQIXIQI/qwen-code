@@ -53,7 +53,14 @@ export function terminalSupportsSynchronizedOutput(
   }
 
   const termProgram = env['TERM_PROGRAM'];
-  if (termProgram === 'WezTerm' || termProgram === 'iTerm.app') {
+  // Warp's DECRQM 2026 probe answers status 2 (recognized, reset), so
+  // synchronized updates are available there; without them Warp renders the
+  // erase-then-rewrite pattern as flicker (issue #8557).
+  if (
+    termProgram === 'WezTerm' ||
+    termProgram === 'iTerm.app' ||
+    termProgram === 'WarpTerminal'
+  ) {
     return true;
   }
 
